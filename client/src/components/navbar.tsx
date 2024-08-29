@@ -12,52 +12,34 @@ const Navbar: React.FC = () => {
             <nav className="flex-1 flex flex-col justify-between">
                 <ul>
                     <li className="mb-4">
-                        <Link
-                            to="/user/home"
-                            className="block py-2 px-4 rounded hover:bg-gray-700"
-                        >
+                        <Link to="reserveDashBoard" className="block py-2 px-4 rounded hover:bg-gray-700k" >
                             <HomeIcon className="text-2xl" />
                         </Link>
                     </li>
                     <li className="mb-4">
-                        <Link
-                            to="/admin/manage-users"
-                            className="block py-2 px-4 rounded hover:bg-gray-700"
-                        >
+                        <Link to="usersInfo" className="block py-2 px-4 rounded hover:bg-gray-700">
                             <Students className="text-2xl" />
                         </Link>
                     </li>
                     <li className="mb-4">
-                        <Link 
-                            to="/admin/reserve"
-                            className="block py-2 px-4 rounded hover:bg-gray-700"
-                        >
+                        <Link  to="reserve" className="block py-2 px-4 rounded hover:bg-gray-700" >
                             <Book className="text-2xl" />
                         </Link>
                     </li>
                     <li className="mb-4">
-                        <Link
-                            to="/admin/complaints"
-                            className="block py-2 px-4 rounded hover:bg-gray-700"
-                        >
+                        <Link to="complaints" className="block py-2 px-4 rounded hover:bg-gray-700" >
                             <Complaints className="text-2xl" />
                         </Link>
                     </li>
                     <li className="mb-4">
-                        <Link
-                            to="/admin/complaints"
-                            className="block py-2 px-4 rounded hover:bg-gray-700"
-                        >
+                        <Link to="raiseComplaint" className="block py-2 px-4 rounded hover:bg-gray-700" >
                             <Details className="text-2xl" />
                         </Link>
                     </li>
                 </ul>
                 <ul>
                     <li className="mb-4">
-                        <Link
-                            to="/admin/settings"
-                            className="block py-2 px-4 rounded hover:bg-gray-700"
-                        >
+                        <Link to="/admin/settings" className="block py-2 px-4 rounded hover:bg-gray-700" >
                             <Settings className="text-2xl" />
                         </Link>
                     </li>

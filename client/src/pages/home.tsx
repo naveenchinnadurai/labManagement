@@ -1,10 +1,9 @@
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Navbar from "../components/navbar";
-import ReserveLab from "./reservation";
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
     return (
         <div className="flex-1 h-screen">
             <div className="flex-1 bg-gray-100 p-6">
@@ -28,11 +27,9 @@ function HomeLayout() {
     return (
         <div className="flex w-screen h-screen">
             <Navbar />
-            <Routes>
-                <Route path="/user/reserve" element={<ReserveLab />} />
-                <Route path="/user/home" element={<Home />} />
-                <Route path="/" element={<Home />} />
-            </Routes>
+            <div className="overflow-auto w-full">
+                <Outlet />
+            </div>
         </div>
     )
 }

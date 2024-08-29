@@ -1,3 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.rbc-calendar {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .rbc-toolbar-label {
+    font-size: 1.5rem;
+    color: red;
+    font-weight: bold;
+  }
+  
+  .rbc-header {
+    color: #34495e;
+    font-size: 1rem;
+    padding: 7px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .rbc-date-cell {
+    color: #2c3e50;
+    font-size: 1rem;
+    padding-top:5px;
+    padding-right:10px;
+    font-weight:700;
+    height: 100%;
+  }
+  
+  .rbc-date-cell:hover {
+    background-color: #e7f1ff;
+  }
+  
+  .rbc-off-range {
+    color: #bdc3c7;
+  }
+  
+  .rbc-today {
+    background-color: rgb(203, 171, 235);
+  }
+  
+  .rbc-event {
+    background-color: #3498db;
+    color: white;
+    padding: 5px;
+    margin: 5px;
+    width: fit-content;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+  
+  .rbc-event:hover {
+    background-color: #2980b9;
+  }
+  
+  .rbc-month-view {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .rbc-day-bg {
+    border: 1px solid #ddd;
+  }
+  

@@ -53,7 +53,7 @@ const ReserveLab: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-500">
+    <div className="flex justify-center items-center h-screen bg-gray-500 w-full">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md" >
         <h2 className="text-2xl font-bold mb-6 text-center">Reserve Lab</h2>
         <div className="mb-4">
