@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../components/modal";
 import { HiPlusSm as Plus } from "react-icons/hi";
 import RegisterAdmin from "../components/registerAdmin";
+import axios from "axios";
 
 const UserInfo: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
+    const [admins,setAdmins]=useState();
+    const getAllAdmins = async () => {
+        const res = await axios.get('http://localhost:7000/api/v1/users/admins/');
+
+        console.log(res)
+    }
+    useEffect(() => {
+        getAllAdmins()
+
+    }, [])
 
     return (
         <div className="p-4 bg-white h-full rounded-lg shadow-md flex flex-col">
@@ -16,6 +27,7 @@ const UserInfo: React.FC = () => {
             </div>
             <div className="h-full flex justify-center py-5">
                 <p className="text-lg font-normal">No Admin except you!!</p>
+
             </div>
             <Modal isOpen={open} onClose={() => setOpen(false)} title="Create a Admin Role" className="">
                 <RegisterAdmin />

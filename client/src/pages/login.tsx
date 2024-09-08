@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useUser } from "../context/userProvider";
+import { useNavigate } from "react-router-dom";
 
 interface LoginuserData {
   email: string;
@@ -9,6 +10,8 @@ interface LoginuserData {
 }
 
 const Login: React.FC = () => {
+
+  const navigate=useNavigate();
 
   const { setUser } = useUser()
 
@@ -34,6 +37,7 @@ const Login: React.FC = () => {
       const response = await axios.post("http://localhost:7000/api/v1/auth/login", userData);
       console.log(response.data);
       setUser(response.data.userInfo)
+      navigate('/home/dashboard')
     } catch (error) {
       console.error("Error creating admin:", error);
       throw new Error("Failed to create admin. Please try again.");

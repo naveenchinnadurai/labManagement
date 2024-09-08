@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
                         </Link>
                     </li>
                     <li className="mb-4">
-                        <Link to="raiseComplaint" className="block py-2 px-4 rounded hover:bg-gray-700" >
+                        <Link to="labItems" className="block py-2 px-4 rounded hover:bg-gray-700" >
                             <Details className="text-2xl" />
                         </Link>
                     </li>
