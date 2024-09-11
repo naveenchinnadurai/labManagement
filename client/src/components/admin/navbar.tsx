@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
             <nav className="flex-1 flex flex-col justify-between">
                 <ul>
                     <li className="mb-4">
-                        <Link to="reserveDashBoard" className="block py-2 px-4 rounded hover:bg-gray-700k" >
+                        <Link to="dashboard" className="block py-2 px-4 rounded hover:bg-gray-700k" >
                             <HomeIcon className="text-2xl" />
                         </Link>
                     </li>
@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
                         </Link>
                     </li>
                     <li className="mb-4">
-                        <Link  to="reserve" className="block py-2 px-4 rounded hover:bg-gray-700" >
+                        <Link  to="reserveDashBoard" className="block py-2 px-4 rounded hover:bg-gray-700" >
                             <Book className="text-2xl" />
                         </Link>
                     </li>

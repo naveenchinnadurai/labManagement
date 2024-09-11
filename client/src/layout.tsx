@@ -1,30 +1,32 @@
 import { Route, Routes, } from 'react-router-dom';
 import PageNotFound from './pages/404';
 import ViewComplaints from './pages/complaints';
-import HomeLayout, { Home } from './pages/home';
+import StaffHomeLayout, { Home as StaffHome } from './pages/admin/home';
 import Login from './pages/login';
-import RaiseComplaint from './pages/raiseComplaint';
-import ReserveLab from './pages/reservation';
-import UserInfo from './pages/userInfo';
-import ReservedDashboard from './pages/reservedDashboard';
+import RaiseComplaint from './pages/user/raiseComplaint';
+import ReserveLab from './pages/user/reservation';
+import UserInfo from './pages/admin/userInfo';
+import ReservedDashboard from './pages/admin/reservedDashboard';
 import { UserProvider } from './context/userProvider';
-import LabItems from './pages/labItems';
+import LabItems from './pages/admin/labItems';
+import StudentHomeLayout, { Home as StudentHome} from './pages/user/home';
 
 function Layout() {
     return (
         <UserProvider>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route path="/admin" element={<HomeLayout />} >
-                    <Route path="dashboard" element={<Home />} />
+                <Route path="/admin" element={<StaffHomeLayout />} >
+                    <Route path="dashboard" element={<StaffHome />} />
                     <Route path="reserveDashBoard" element={<ReservedDashboard />} />
                     <Route path="usersInfo" element={<UserInfo />} />
                     <Route path="labItems" element={<LabItems />} />
                     <Route path="complaints" element={<ViewComplaints />} />
                 </Route>
-                <Route path="/user" element={<HomeLayout />} >
+                <Route path="/user" element={<StudentHomeLayout />} >
+                    <Route path="home" element={<StudentHome />} />
                     <Route path="reserve" element={<ReserveLab />} />
-                    <Route path="raiseComplaint" element={<RaiseComplaint />} />
+                    <Route path="raise-complaint" element={<RaiseComplaint />} />
                 </Route>
                 <Route path="/*" element={<PageNotFound />} />
             </Routes>

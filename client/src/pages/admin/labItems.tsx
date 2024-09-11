@@ -1,5 +1,5 @@
 import React from 'react';
-import LabItemCard from '../components/itemS';
+import LabItemCard from '../../components/items';
 
 const computerLabItems = [
     {

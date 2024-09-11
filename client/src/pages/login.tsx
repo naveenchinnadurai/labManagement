@@ -3,23 +3,25 @@ import React, { useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useUser } from "../context/userProvider";
 import { useNavigate } from "react-router-dom";
+import apiClient from "../utils/api";
 
-interface LoginuserData {
-  email: string;
+interface LoginUserData {
+  email?: string;
+  id?: string;
   password: string;
 }
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const { setUser } = useUser();
 
-  const navigate=useNavigate();
-
-  const { setUser } = useUser()
-
-  const [userData, setUserData] = useState<LoginuserData>({
+  const [userData, setUserData] = useState<LoginUserData>({
     email: "",
+    id: "",
     password: "",
   });
 
+  const [role, setRole] = useState<"staff" | "student">("staff");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,17 +32,31 @@ const Login: React.FC = () => {
     });
   };
 
+  const handleRoleToggle = () => {
+    setRole(role === "staff" ? "student" : "staff");
+    setUserData({ ...userData, email: "", id: "", password: "" });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(userData);
     try {
-      const response = await axios.post("http://localhost:7000/api/v1/auth/login", userData);
+
+      const response = await apiClient.post("auth/login", { type: role, userData });
+      console.log(response);
+      if (response.status === 201) {
+        setUser(response.data.userInfo);
+        if (role === "staff") {
+          navigate(`/admin/dashboard`);
+        } else {
+          navigate(`/user/dashboard`);
+        }
+        return;
+      }
       console.log(response.data);
-      setUser(response.data.userInfo)
-      navigate('/home/dashboard')
     } catch (error) {
-      console.error("Error creating admin:", error);
-      throw new Error("Failed to create admin. Please try again.");
+      console.error("Error logging in:", error);
+      throw new Error("Failed to log in. Please try again.");
     }
   };
 
@@ -54,22 +70,61 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-            required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          {role === "staff" ? "Staff Login" : "Student Login"}
+        </h2>
+        <div className="mb-4 flex items-center justify-center">
+          <span className="mr-4 font-medium">{role === "staff" ? "Staff" : "Student"}</span>
+          <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+            <input
+              type="checkbox"
+              name="toggle"
+              id="toggle"
+              checked={role === "student"}
+              onChange={handleRoleToggle}
+              className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+            />
+            <label
+              htmlFor="toggle"
+              className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
+            ></label>
+          </div>
+          <span className="ml-4 font-medium">{role === "student" ? "Student" : "Staff"}</span>
         </div>
+
+        {
+          role === "staff" ? (
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={userData.email}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          ) : (
+            <div className="mb-4">
+              <label htmlFor="id" className="block text-sm font-medium text-gray-700">
+                Student ID
+              </label>
+              <input
+                type="text"
+                id="id"
+                name="id"
+                value={userData.id}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          )
+        }
 
         <div className="mb-6">
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">

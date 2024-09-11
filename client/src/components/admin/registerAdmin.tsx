@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import axios from 'axios';
+import apiClient from '../../utils/api';
 
 interface SignupadminData {
     name: string;
@@ -16,7 +16,7 @@ function RegisterAdmin() {
         email: "",
         password: "",
         mobileNumber: "",
-        adminRole: "user",
+        adminRole: "Lab Assistant", // Set a default value for adminRole
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -33,21 +33,21 @@ function RegisterAdmin() {
         e.preventDefault();
         console.log(adminData);
         try {
-            const response = await axios.post("http://localhost:7000/api/v1/auth/signup", adminData);
+            const response = await apiClient.post("auth/signup", adminData);
             console.log(response.data);
         } catch (error) {
             console.error("Error creating admin:", error);
-            throw new Error("Failed to create admin. Please try again.");
         }
     };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
     return (
         <form onSubmit={handleSubmit} className="p-4 rounded-xl w-full max-w-md">
             <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700"> Name </label>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
                 <input
                     type="text"
                     id="name"
@@ -60,7 +60,7 @@ function RegisterAdmin() {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700"> Email </label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                 <input
                     type="email"
                     id="email"
@@ -73,7 +73,7 @@ function RegisterAdmin() {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700"> Password </label>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                 <div className="relative">
                     <input
                         type={showPassword ? "text" : "password"}
@@ -91,7 +91,7 @@ function RegisterAdmin() {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700"> Mobile Number </label>
+                <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700">Mobile Number</label>
                 <input
                     type="text"
                     id="mobileNumber"
@@ -103,11 +103,11 @@ function RegisterAdmin() {
             </div>
 
             <div className="mb-6">
-                <label htmlFor="adminRole" className="block text-sm font-medium text-gray-700"> Admin Role </label>
+                <label htmlFor="adminRole" className="block text-sm font-medium text-gray-700">Admin Role</label>
                 <select
                     id="adminRole"
                     name="adminRole"
-                    value={adminData.adminRole}
+                    value={adminData.adminRole} // Use the value from the state
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -125,7 +125,7 @@ function RegisterAdmin() {
                 Create Admin
             </button>
         </form>
-    )
+    );
 }
 
-export default RegisterAdmin
+export default RegisterAdmin;

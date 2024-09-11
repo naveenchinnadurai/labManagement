@@ -69,14 +69,16 @@ const ViewComplaints: React.FC = () => {
     return (
         <div className="p-6 bg-white rounded-lg shadow-md">
             <h1 className="text-2xl font-bold mb-4">Student Complaints</h1>
-            <div className="flex items-center flex-wrap gap-3">
-                {complaints.length > 0 ? (
-                    complaints.map((complaint) => (
-                        <ComplaintCard key={complaint.id} {...complaint} />
-                    ))
-                ) : (
-                    <p className="text-gray-600">No complaints received yet.</p>
-                )}
+            <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-3">
+                {
+                    complaints.length > 0 ? (
+                        complaints.map((complaint) => (
+                            <ComplaintCard key={complaint.id} {...complaint} />
+                        ))
+                    ) : (
+                        <p className="text-gray-600">No complaints received yet.</p>
+                    )
+                }
             </div>
         </div>
     );

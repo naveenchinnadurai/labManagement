@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 
 interface User {
     id: string;
-    adminRole: string;
+    role: 'admin' | 'user' | 'superAdmin';
     email: string;
     mobileNumber: string;
     name: string;
@@ -20,16 +20,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
+        console.log(user)
         localStorage.setItem('user', JSON.stringify(user))
     }, [user])
 
-/*     useEffect(() => {
-        const userInfo = localStorage.getItem('user');
-
-        if (userInfo) {
-            setUser(JSON.parse(userInfo))
-        }
-    }, []) */
+    /*     useEffect(() => {
+            const userInfo = localStorage.getItem('user');
+    
+            if (userInfo) {
+                setUser(JSON.parse(userInfo))
+            }
+        }, []) */
 
 
     const logout = () => {

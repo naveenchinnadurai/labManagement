@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Modal from "../components/modal";
+import Modal from "../../components/modal";
 import { HiPlusSm as Plus } from "react-icons/hi";
 
 const RaiseComplaint: React.FC = () => {

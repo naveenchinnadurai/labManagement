@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Modal from "../components/modal";
-import { useUser } from "../context/userProvider";
+import Modal from "../../components/modal";
+import { useUser } from "../../context/userProvider";
 
 // Set up moment.js localizer for the calendar
 const localizer = momentLocalizer(moment);
