@@ -1,11 +1,14 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
+import { Student } from "../utils/types";
 
 interface User {
+    isLoggedIn: Boolean;
     id: string;
-    role: 'admin' | 'user' | 'superAdmin';
+    name: string;
     email: string;
     mobileNumber: string;
-    name: string;
+    student: Student;
+    role: 'admin' | 'user' | 'superAdmin';
 }
 
 interface UserContextType {
@@ -23,16 +26,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.log(user)
         localStorage.setItem('user', JSON.stringify(user))
     }, [user])
-
-    /*     useEffect(() => {
-            const userInfo = localStorage.getItem('user');
-    
-            if (userInfo) {
-                setUser(JSON.parse(userInfo))
-            }
-        }, []) */
-
-
     const logout = () => {
         setUser(null);
     };

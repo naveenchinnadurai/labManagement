@@ -26,7 +26,6 @@ export const Home: React.FC = () => {
                             onClick={toggleDropdown}
                         />
                     </div>
-
                     {
                         isDropdownOpen && (
                             <div className="absolute right-4 mt-12 bg-white shadow-lg rounded-md py-2 w-40 z-50">

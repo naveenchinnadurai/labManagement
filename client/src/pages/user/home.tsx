@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../../components/user/navbar';
 import { Outlet } from 'react-router-dom';
 import { FaUserCircle, FaEnvelope, FaBook, FaUniversity, FaPhone, FaExclamationTriangle, FaMoneyBillWave } from "react-icons/fa";
+import { useUser } from '../../context/userProvider';
 
 const HomeRoot: React.FC = () => {
     return (
@@ -16,13 +17,14 @@ const HomeRoot: React.FC = () => {
 
 
 export const Home = () => {
+    const { user } = useUser();
     const studentDetails = {
-        name: "Swetha Kumar",
-        rollNo: "2022B001",
-        email: "swethakumar@example.com",
-        department: "Electrical Engineering",
-        year: "2nd",
-        mobileNumber: "9876543210",
+        name: user?.name,
+        rollNo: user?.id,
+        email: user?.email,
+        department: user?.student.department,
+        year: user?.student.year,
+        mobileNumber: user?.mobileNumber,
         fines: [
             { amount: 300, reason: "Damaged lab equipment" },
             { amount: 150, reason: "Library late fee" },
@@ -35,14 +37,15 @@ export const Home = () => {
 
     return (
         <div className="flex flex-col gap-6 w-full max-w-6xl">
-            {/* Left Section: Student Details */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-                <div className="flex justify-center mb-6">
-                    <FaUserCircle className="text-indigo-700 text-7xl" />
+            <div className="bg-white rounded-lg shadow-lg p-10 flex gap-5">
+                <div className="flex flex-col w-2/5">
+                    <div className="flex justify-center mb-6">
+                        <FaUserCircle className="text-indigo-700 text-7xl" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-center mb-4">Welcome, {studentDetails.name}!</h2>
                 </div>
-                <h2 className="text-2xl font-bold text-center mb-4">Welcome, {studentDetails.name}!</h2>
 
-                <div className="space-y-4 grid grid-cols-5 place-items-center">
+                <div className="grid grid-cols-2">
                     <div className="flex items-center justify-center">
                         <FaUniversity className="mr-3 text-indigo-500" />
                         <p className="text-gray-700">
@@ -50,7 +53,7 @@ export const Home = () => {
                         </p>
                     </div>
 
-                    <div className="flex ">
+                    <div className="flex items-center">
                         <FaBook className="mr-3 text-indigo-500" />
                         <p className="text-gray-700">
                             <strong>Department: </strong> {studentDetails.department}

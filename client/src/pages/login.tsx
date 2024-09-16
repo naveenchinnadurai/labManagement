@@ -1,8 +1,7 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { useUser } from "../context/userProvider";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/userProvider";
 import apiClient from "../utils/api";
 
 interface LoginUserData {
@@ -45,7 +44,18 @@ const Login: React.FC = () => {
       const response = await apiClient.post("auth/login", { type: role, userData });
       console.log(response);
       if (response.status === 201) {
-        setUser(response.data.userInfo);
+        setUser({
+          isLoggedIn: true,
+          id: response.data.userInfo.id,
+          name: response.data.userInfo.name,
+          email: response.data.userInfo.email,
+          student: {
+            department: response.data.userInfo.department,
+            year: response.data.userInfo.year
+          },
+          mobileNumber: response.data.userInfo.mobileNumber,
+          role: response.data.userInfo.adminRole || 'student',
+        });
         if (role === "staff") {
           navigate(`/admin/dashboard`);
         } else {
@@ -56,7 +66,6 @@ const Login: React.FC = () => {
       console.log(response.data);
     } catch (error) {
       console.error("Error logging in:", error);
-      throw new Error("Failed to log in. Please try again.");
     }
   };
 

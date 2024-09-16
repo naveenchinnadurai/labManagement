@@ -1,5 +1,5 @@
 import { FaBook, FaExclamationCircle, FaHistory, FaCog, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaCopy as Complaints } from "react-icons/fa6";
 
 
@@ -10,54 +10,36 @@ function Navbar() {
     };
     return (
         <nav className="bg-slate-800">
-            <ul className="space-y-2 py-3 flex flex-col items-center justify-center">
+            <ul className="space-y-2 py-3 flex flex-col items-center justify-center text-white">
                 <li>
-                    <button
-                        className="w-full flex items-center px-6 py-3"
-                        onClick={() => navigate('/user/home')}
-                    >
+                    <Link className="w-full flex items-center px-6 py-3" to='dashboard' >
                         <FaUserCircle className="text-3xl cursor-pointer" />
-                    </button>
+                    </Link>
                 </li>
                 <li>
-                    <button
-                        className="w-full flex items-center px-6 py-3"
-                        onClick={() => navigate('/user/reserve')}
-                    >
+                    <Link className="w-full flex items-center px-6 py-3" to='reserve' >
                         <FaBook className="text-xl" />
-                    </button>
+                    </Link>
                 </li>
                 <li>
-                    <button
-                        className="w-full flex items-center px-6 py-3"
-                        onClick={() => navigate('/user/raise-complaint')}
-                    >
+                    <Link className="w-full flex items-center px-6 py-3" to='raise-complaint' >
                         <FaExclamationCircle className="text-xl" />
-                    </button>
+                    </Link>
                 </li>
                 <li className="mb-4">
-                    <button
-                        className="w-full flex items-center px-6 py-3"
-                        onClick={() => navigate('/history')}
-                    >
+                    <Link className="w-full flex items-center px-6 py-3" to='history' >
                         <Complaints className="text-xl" />
-                    </button>
+                    </Link>
                 </li>
                 <li>
-                    <button
-                        className="w-full flex items-center px-6 py-3"
-                        onClick={() => navigate('/history')}
-                    >
+                    <Link className="w-full flex items-center px-6 py-3" to='history' >
                         <FaHistory className="text-xl" />
-                    </button>
+                    </Link>
                 </li>
                 <li className='absolute bottom-2'>
-                    <button
-                        className="w-full flex items-center px-6 py-3"
-                        onClick={() => navigate('/settings')}
-                    >
+                    <Link className="w-full flex items-center px-6 py-3" to='settings' >
                         <FaCog className="text-2xl" />
-                    </button>
+                    </Link>
                 </li>
             </ul>
         </nav>

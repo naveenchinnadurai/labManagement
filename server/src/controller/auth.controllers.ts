@@ -30,7 +30,7 @@ export const register = async (req: Request, res: Response) => {
     }
 };
 
-// Login for admin or student
+
 export const login = async (req: Request, res: Response) => {
     const { type, userData } = req.body;
 
@@ -48,13 +48,11 @@ export const login = async (req: Request, res: Response) => {
         if (!email) {
             return res.status(401).json({ message: "Email must be provided for staff login." });
         }
-        // Admin login
         return handleLogin('admin', email, password, res);
     } else {
         if (!id) {
             return res.status(401).json({ message: "ID must be provided for student login." });
         }
-        // Student login
         return handleLogin('student', id, password, res);
     }
 };
