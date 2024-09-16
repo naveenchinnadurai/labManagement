@@ -1,5 +1,5 @@
 {
-  "id": "230fd06b-4df2-40eb-8201-a695e46e2301",
+  "id": "0cf27a27-04ce-4db1-9c93-11fd4e1b82d1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -21,14 +21,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "email": {
-          "name": "email",
+        "password": {
+          "name": "password",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "password": {
-          "name": "password",
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -70,9 +70,15 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "student_name": {
+          "name": "student_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "student_id": {
           "name": "student_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -91,21 +97,46 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
+          "notNull": true
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lab": {
+          "name": "lab",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Common'"
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
-          "default": "now()"
+          "default": "'It will be sorted out soon!!'"
         }
       },
       "indexes": {},
       "foreignKeys": {
+        "complaints_student_name_students_name_fk": {
+          "name": "complaints_student_name_students_name_fk",
+          "tableFrom": "complaints",
+          "tableTo": "students",
+          "columnsFrom": [
+            "student_name"
+          ],
+          "columnsTo": [
+            "name"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "complaints_student_id_students_id_fk": {
           "name": "complaints_student_id_students_id_fk",
           "tableFrom": "complaints",
@@ -123,8 +154,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.students": {
-      "name": "students",
+    "public.reservation": {
+      "name": "reservation",
       "schema": "",
       "columns": {
         "id": {
@@ -133,6 +164,92 @@
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
+        },
+        "reserved_by": {
+          "name": "reserved_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reserver_name": {
+          "name": "reserver_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reservedDate": {
+          "name": "reservedDate",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "period": {
+          "name": "period",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reserved_on": {
+          "name": "reserved_on",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lab": {
+          "name": "lab",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'I'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "reservation_reserved_by_admin_id_fk": {
+          "name": "reservation_reserved_by_admin_id_fk",
+          "tableFrom": "reservation",
+          "tableTo": "admin",
+          "columnsFrom": [
+            "reserved_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "reservation_reserver_name_admin_name_fk": {
+          "name": "reservation_reserver_name_admin_name_fk",
+          "tableFrom": "reservation",
+          "tableTo": "admin",
+          "columnsFrom": [
+            "reserver_name"
+          ],
+          "columnsTo": [
+            "name"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.students": {
+      "name": "students",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -144,10 +261,22 @@
           "name": "department",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "year": {
           "name": "year",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mobile_number": {
+          "name": "mobile_number",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -163,11 +292,25 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "students_id_unique": {
+          "name": "students_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        },
         "students_name_unique": {
           "name": "students_name_unique",
           "nullsNotDistinct": false,
           "columns": [
             "name"
+          ]
+        },
+        "students_email_unique": {
+          "name": "students_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
           ]
         }
       }

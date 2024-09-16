@@ -11,6 +11,7 @@ import { UserProvider } from './context/userProvider';
 import LabItems from './pages/admin/labItems';
 import StudentHomeLayout, { Home as StudentHome } from './pages/user/home';
 import ProtectedRoutes from './components/protectedRoutes';
+import Settings from './pages/user/settings';
 
 function Layout() {
     return (
@@ -30,6 +31,7 @@ function Layout() {
                     <Route path="usersInfo" element={<UserInfo />} />
                     <Route path="labItems" element={<LabItems />} />
                     <Route path="complaints" element={<ViewComplaints />} />
+                    <Route path="*" element={<PageNotFound />} />
                 </Route>
                 <Route
                     path="/user"
@@ -41,6 +43,9 @@ function Layout() {
                     <Route path="dashboard" element={<StudentHome />} />
                     <Route path="reserve" element={<ReserveLab />} />
                     <Route path="raise-complaint" element={<RaiseComplaint />} />
+                    <Route path="complaints" element={<ViewComplaints />} />
+                    <Route path="settings" element={<Settings />} />
+                    <Route path="*" element={<PageNotFound />} />
                 </Route>
                 <Route path="/*" element={<PageNotFound />} />
             </Routes>

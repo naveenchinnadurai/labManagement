@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userProvider";
 import apiClient from "../utils/api";
 
@@ -11,8 +10,18 @@ interface LoginUserData {
 }
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
-  const { setUser } = useUser();
+  const { user, setUser, navigate } = useUser();
+
+  useEffect(() => {
+    if (user?.isLoggedIn) {
+      if (user.role === 'student') {
+        navigate(`/user/dashboard`);
+      } else {
+        navigate(`/admin/dashboard`);
+      }
+    }
+
+  }, [])
 
   const [userData, setUserData] = useState<LoginUserData>({
     email: "",
@@ -79,11 +88,9 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          {role === "staff" ? "Staff Login" : "Student Login"}
-        </h2>
+        <h2 className="text-2xl font-bold mb-6 text-center"> Login </h2>
         <div className="mb-4 flex items-center justify-center">
-          <span className="mr-4 font-medium">{role === "staff" ? "Staff" : "Student"}</span>
+          <span className="mr-4 font-medium">Staff</span>
           <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
             <input
               type="checkbox"
@@ -91,14 +98,14 @@ const Login: React.FC = () => {
               id="toggle"
               checked={role === "student"}
               onChange={handleRoleToggle}
-              className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+              className={`absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer ${role === "student" ? 'right-0' : 'left-0'}`}
             />
             <label
               htmlFor="toggle"
-              className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
+              className="toggle-label block overflow-hidden h-6 rounded-full bg-gray-400 cursor-pointer"
             ></label>
           </div>
-          <span className="ml-4 font-medium">{role === "student" ? "Student" : "Staff"}</span>
+          <span className="ml-4 font-medium">Student</span>
         </div>
 
         {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../../components/user/navbar';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { FaUserCircle, FaEnvelope, FaBook, FaUniversity, FaPhone, FaExclamationTriangle, FaMoneyBillWave } from "react-icons/fa";
 import { useUser } from '../../context/userProvider';
 
@@ -17,7 +17,7 @@ const HomeRoot: React.FC = () => {
 
 
 export const Home = () => {
-    const { user } = useUser();
+    const { user, logout } = useUser();
     const studentDetails = {
         name: user?.name,
         rollNo: user?.id,
@@ -80,10 +80,10 @@ export const Home = () => {
                             <strong>Mobile: </strong> {studentDetails.mobileNumber}
                         </p>
                     </div>
+
+                    <button onClick={logout}>Signout</button>
                 </div>
             </div>
-
-            {/* Right Section: Fines and Complaints */}
             <div className="bg-white rounded-lg shadow-lg p-6">
                 {/* Fines */}
                 <h2 className="text-xl font-bold mb-4 text-gray-900">

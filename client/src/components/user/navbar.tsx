@@ -27,7 +27,7 @@ function Navbar() {
                     </Link>
                 </li>
                 <li className="mb-4">
-                    <Link className="w-full flex items-center px-6 py-3" to='history' >
+                    <Link className="w-full flex items-center px-6 py-3" to='complaints' >
                         <Complaints className="text-xl" />
                     </Link>
                 </li>

@@ -4,20 +4,14 @@ import { FaLocationDot as Location } from "react-icons/fa6";
 import { FiEdit as Edit } from "react-icons/fi";
 import { IoClose as Close, IoCheckmarkDoneSharp as Done } from "react-icons/io5";
 import { } from "react-icons/io5";
+import apiClient from '../utils/api';
+import { useUser } from '../context/userProvider';
+import { Complaint } from '../utils/types';
 
 
-interface Complaint {
-    id: string;
-    studentName: string;
-    rollNo: string;
-    complaintDetail: string;
-    postedDate: string;
-    updatedDate: string;
-    status: 'Resolved' | 'Pending' | 'In Progress';
-    lab: string;
-}
 
-const ComplaintCard: React.FC<Complaint> = ({ studentName, complaintDetail, postedDate, updatedDate, status, lab, rollNo }) => {
+const ComplaintCard: React.FC<Complaint> = ({ id, studentName, complaintDetails, createdAt, updatedAt, status, lab, studentId }) => {
+    const { user } = useUser();
     const [editMode, setEditMode] = useState(false);
     const [currentStatus, setCurrentStatus] = useState<Complaint['status']>(status);
 
@@ -39,48 +33,55 @@ const ComplaintCard: React.FC<Complaint> = ({ studentName, complaintDetail, post
         setEditMode(!editMode);
     };
 
-    const saveStatus = () => {
-        console.log(`Saving status: ${currentStatus}`);
+    const saveStatus = async () => {
+        try {
+            const res = await apiClient.put(`/complaints/${id}`, { status: currentStatus })
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
         setEditMode(false);
     };
 
     return (
         <div className="p-4 bg-gray-100 rounded-lg shadow-md">
             <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-gray-900">Raised By: {studentName} ({rollNo})</h2>
+                <h2 className="text-lg font-bold text-gray-900">Raised By: {studentName} ({studentId})</h2>
                 {
-                    editMode ? (
-                        <div className="flex justify-end gap-2">
-                            <button
-                                onClick={saveStatus}
-                                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                            >
-                                <Done className='text-xl'/>
-                            </button>
-                            <button
-                                onClick={toggleEditMode}
-                                className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 flex items-center justify-center"
-                            >
-                                <Close className='text-xl'/>cancel
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="flex justify-end">
-                            <button
-                                onClick={toggleEditMode}
-                                className="px-3 py-1 rounded text-black"
-                            >
-                                <Edit className='text-xl' />
-                            </button>
-                        </div>
-                    )
+                    user?.role != 'student' ? (
+                        editMode ? (
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    onClick={saveStatus}
+                                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                                >
+                                    <Done className='text-xl' />
+                                </button>
+                                <button
+                                    onClick={toggleEditMode}
+                                    className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600 flex items-center justify-center"
+                                >
+                                    <Close className='text-xl' />cancel
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={toggleEditMode}
+                                    className="px-3 py-1 rounded text-black"
+                                >
+                                    <Edit className='text-xl' />
+                                </button>
+                            </div>
+                        )
+                    ) : null
                 }
             </div>
-            <p className="text-gray-600 mt-2">{complaintDetail}</p>
+            <p className="text-gray-600 mt-2">{complaintDetails}</p>
             <div className="mt-4 flex flex-wrap gap-5 text-sm text-gray-500">
                 <div className="flex gap-1 items-center justify-center">
                     <Calender className="text-base" />
-                    <p>Posted On: {new Date(postedDate).toLocaleDateString()}</p>
+                    <p>Posted On: {new Date(createdAt).toLocaleDateString()}</p>
                 </div>
                 <div className="flex gap-1 items-center justify-center">
                     <Dot className={`text-base ${getColor(currentStatus)}`} />
@@ -106,7 +107,7 @@ const ComplaintCard: React.FC<Complaint> = ({ studentName, complaintDetail, post
                 </div>
                 <div className="flex gap-1 items-center justify-center">
                     <UpdatedCalender className="text-base" />
-                    <p>Updated On: {new Date(updatedDate).toLocaleDateString()}</p>
+                    <p>Updated On: {new Date(updatedAt).toLocaleDateString()}</p>
                 </div>
             </div>
 
