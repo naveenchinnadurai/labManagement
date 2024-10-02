@@ -1,6 +1,6 @@
 {
-  "id": "a03e2ec7-94e1-40c8-ab7a-27895d3473ec",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "affbbd4a-1540-482a-8a1c-06f3acaeb5db",
+  "prevId": "a03e2ec7-94e1-40c8-ab7a-27895d3473ec",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -50,6 +50,13 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "admins_name_unique": {
+          "name": "admins_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        },
         "admins_email_unique": {
           "name": "admins_email_unique",
           "nullsNotDistinct": false,

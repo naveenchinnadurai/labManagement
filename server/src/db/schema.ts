@@ -1,8 +1,8 @@
 import { pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
-export const admin = pgTable("admin", {
+export const admins = pgTable("admins", {
     id: uuid("id").primaryKey().defaultRandom(),
-    name: text("name").notNull(),
+    name: text("name").notNull().unique(),
     password: text("password").notNull(),
     email: text("email").unique().notNull(),
     mobileNumber: text("mobile_number"),
@@ -23,10 +23,10 @@ export const students = pgTable("students", {
 
 export const reservation = pgTable("reservation", {
     id: uuid('id').primaryKey().defaultRandom(),
-    reservedBy: uuid('reserved_by').references(() => admin.id),
-    reserverName: text('reserver_name').references(() => admin.name).notNull(),
+    reservedBy: uuid('reserved_by').references(() => admins.id),
+    reserverName: text('reserver_name').references(() => admins.name).notNull(),
     reservedDate: text('reservedDate').notNull(),
-    period: text('period').notNull(),
+    session: text('period').array().notNull(),
     reservedOn: text('reserved_on').notNull(),
     message:text('message'),
     lab:text('lab').notNull().default('I')

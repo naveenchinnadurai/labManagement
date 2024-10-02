@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useUser } from "../context/userProvider";
 import apiClient from "../utils/api";
+import Popup from "../components/popup";
 
 interface LoginUserData {
   email?: string;
@@ -11,6 +12,17 @@ interface LoginUserData {
 
 const Login: React.FC = () => {
   const { user, setUser, navigate } = useUser();
+  const [message, setMessage] = useState<string>("");
+  const [popUpOpen, setPopUpOpen] = useState<boolean>(false)
+
+  const [userData, setUserData] = useState<LoginUserData>({
+    email: "",
+    id: "",
+    password: "",
+  });
+
+  const [role, setRole] = useState<"staff" | "student">("staff");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (user?.isLoggedIn) {
@@ -22,15 +34,6 @@ const Login: React.FC = () => {
     }
 
   }, [])
-
-  const [userData, setUserData] = useState<LoginUserData>({
-    email: "",
-    id: "",
-    password: "",
-  });
-
-  const [role, setRole] = useState<"staff" | "student">("staff");
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,21 +52,20 @@ const Login: React.FC = () => {
     e.preventDefault();
     console.log(userData);
     try {
-
       const response = await apiClient.post("auth/login", { type: role, userData });
-      console.log(response);
       if (response.status === 201) {
+        console.log("Inside 201")
         setUser({
           isLoggedIn: true,
-          id: response.data.userInfo.id,
-          name: response.data.userInfo.name,
-          email: response.data.userInfo.email,
+          id: response.data.user.id,
+          name: response.data.user.name,
+          email: response.data.user.email,
           student: {
-            department: response.data.userInfo.department,
-            year: response.data.userInfo.year
+            department: response.data.user.department,
+            year: response.data.user.year
           },
-          mobileNumber: response.data.userInfo.mobileNumber,
-          role: response.data.userInfo.adminRole || 'student',
+          mobileNumber: response.data.user.mobileNumber,
+          role: response.data.user.adminRole || 'student',
         });
         if (role === "staff") {
           navigate(`/admin/dashboard`);
@@ -72,9 +74,11 @@ const Login: React.FC = () => {
         }
         return;
       }
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error logging in:", error);
+    } catch (error: any) {
+      setPopUpOpen(true);
+      if (error.response.status === 401) {
+        setMessage(error.response.data.message)
+      }
     }
   };
 
@@ -84,10 +88,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-500 w-full">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
-      >
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"  >
         <h2 className="text-2xl font-bold mb-6 text-center"> Login </h2>
         <div className="mb-4 flex items-center justify-center">
           <span className="mr-4 font-medium">Staff</span>
@@ -173,6 +174,11 @@ const Login: React.FC = () => {
           Login
         </button>
       </form>
+      {
+        popUpOpen ? (
+          <Popup message={message} duration={2500} setIsVisible={() => setPopUpOpen(false)} type="warning" />
+        ) : null
+      }
     </div>
   );
 };

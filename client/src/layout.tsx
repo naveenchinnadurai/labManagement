@@ -41,7 +41,6 @@ function Layout() {
                         </ProtectedRoutes>}
                 >
                     <Route path="dashboard" element={<StudentHome />} />
-                    <Route path="reserve" element={<ReserveLab />} />
                     <Route path="raise-complaint" element={<RaiseComplaint />} />
                     <Route path="complaints" element={<ViewComplaints />} />
                     <Route path="settings" element={<Settings />} />

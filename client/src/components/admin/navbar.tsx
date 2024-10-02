@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
                         </Link>
                     </li>
                     <li className="mb-4">
-                        <Link  to="reserveDashBoard" className="block py-2 px-4 rounded hover:bg-gray-700" >
+                        <Link to="reserveDashBoard" className="block py-2 px-4 rounded hover:bg-gray-700" >
                             <Book className="text-2xl" />
                         </Link>
                     </li>

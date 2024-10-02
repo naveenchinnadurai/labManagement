@@ -1,11 +1,11 @@
-CREATE TABLE IF NOT EXISTS "admin" (
+CREATE TABLE IF NOT EXISTS "admins" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	"password" text NOT NULL,
 	"email" text NOT NULL,
 	"mobile_number" text,
 	"admin_role" text,
-	CONSTRAINT "admin_email_unique" UNIQUE("email")
+	CONSTRAINT "admins_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "complaints" (
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS "reservation" (
 	"reserved_by" uuid,
 	"reserver_name" text NOT NULL,
 	"reservedDate" text NOT NULL,
-	"period" text NOT NULL,
+	"period" text[] NOT NULL,
 	"reserved_on" text NOT NULL,
 	"message" text,
 	"lab" text DEFAULT 'I' NOT NULL
@@ -57,13 +57,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "reservation" ADD CONSTRAINT "reservation_reserved_by_admin_id_fk" FOREIGN KEY ("reserved_by") REFERENCES "public"."admin"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "reservation" ADD CONSTRAINT "reservation_reserved_by_admins_id_fk" FOREIGN KEY ("reserved_by") REFERENCES "public"."admins"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "reservation" ADD CONSTRAINT "reservation_reserver_name_admin_name_fk" FOREIGN KEY ("reserver_name") REFERENCES "public"."admin"("name") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "reservation" ADD CONSTRAINT "reservation_reserver_name_admins_name_fk" FOREIGN KEY ("reserver_name") REFERENCES "public"."admins"("name") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

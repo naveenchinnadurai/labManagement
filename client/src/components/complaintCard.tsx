@@ -46,7 +46,7 @@ const ComplaintCard: React.FC<Complaint> = ({ id, studentName, complaintDetails,
     return (
         <div className="p-4 bg-gray-100 rounded-lg shadow-md">
             <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-gray-900">Raised By: {studentName} ({studentId})</h2>
+                <h2 className="text-lg font-bold text-gray-900">Raised By: {user?.name === studentName ? "You" : studentName} ({studentId})</h2>
                 {
                     user?.role != 'student' ? (
                         editMode ? (

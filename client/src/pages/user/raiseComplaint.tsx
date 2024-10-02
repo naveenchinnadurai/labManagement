@@ -49,13 +49,15 @@ const RaiseComplaint: React.FC = () => {
             console.log(res)
         } catch (error) {
             console.log(error)
+        }finally{
+            setOpen(false)
         }
     };
 
     return (
         <div className="p-6 bg-white h-full rounded-lg shadow-md flex flex-col">
-            <div className="w-full flex justify-end p-4" onClick={() => setOpen(true)}>
-                <button className="p-2 px-5 bg-blue-500 rounded-lg text-white flex gap-1">
+            <div className="w-full flex justify-end p-4">
+                <button className="p-2 px-5 bg-blue-500 rounded-lg text-white flex gap-1" onClick={() => setOpen(true)}>
                     <Plus className="text-2xl" />
                     New Issue
                 </button>
