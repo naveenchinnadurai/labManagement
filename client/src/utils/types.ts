@@ -3,6 +3,13 @@ export interface Student {
     year: string
 }
 
+export interface LoginUserData {
+    id?: String,
+    email?: String,
+    password: String
+}
+
+
 export interface Complaint {
     id: string;
     studentName: string;

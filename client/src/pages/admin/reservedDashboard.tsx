@@ -71,9 +71,9 @@ const LabReservationCalendar: React.FC = () => {
 
     return (
         <div className="h-screen p-4 flex flex-col items-center justify-evenly">
-            <div className="flex justify-between gap-3">
-                <h1 className="text-3xl font-medium">Reservation Dashboard {user?.name}</h1>
-                <button className="p-1 px-4 bg-blue-500 rounded-lg text-white flex gap-1 items-center justify-center" onClick={() => setIsModalOpen(true)}>
+            <div className="flex justify-between w-2/3 gap-3">
+                <h1 className="text-3xl font-medium">Reservation Dashboard</h1>
+                <button className="p-1 px-5 bg-blue-400 rounded-md text-white flex gap-1 items-center justify-center" onClick={() => setIsModalOpen(true)}>
                     Reserve Lab
                 </button>
             </div>

@@ -58,6 +58,7 @@ const ReserveLab: React.FC < Props > = ({ close }) => {
             message: formData.description,
             lab: formData.labNumber
         }
+        console.log(reservationData)
         const res = await apiClient.post("/reservation/", reservationData)
         console.log(res)
         if (res.status === 201) {

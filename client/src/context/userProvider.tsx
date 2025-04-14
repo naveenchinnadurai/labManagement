@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { Student } from "../utils/types";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner"
 
 interface User {
     isLoggedIn: boolean;
@@ -16,6 +17,7 @@ interface UserContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     logout: () => void;
+    setToast: (head: String, message: String) => void;
     navigate: NavigateFunction
 }
 
@@ -46,9 +48,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         navigate('/')
     };
 
+    const setToast = (head: String, message: String) => {
+        toast(head, {
+            description: message
+        })
+    }
+
     return (
-        <UserContext.Provider value={{ user, setUser, logout, navigate }}>
+        <UserContext.Provider value={{ user, setUser, logout, navigate, setToast }}>
             {children}
+            <Toaster />
         </UserContext.Provider>
     );
 };

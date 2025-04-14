@@ -15,6 +15,13 @@
       "when": 1727283422375,
       "tag": "0001_premium_true_believers",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744558909249,
+      "tag": "0002_burly_warhawk",
+      "breakpoints": true
     }
   ]
 }

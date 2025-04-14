@@ -1,37 +1,55 @@
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/userProvider";
 import apiClient from "./api";
 import { LoginUserData } from "./types";
 
-export const login = async ( { role, data }: { role: String; data: LoginUserData; }) => {
-    const navigate = useNavigate();
-    const { setUser } = useUser()
+interface LoginProp {
+    role: 'staff' | 'student';
+    data: LoginUserData;
+}
+
+export const login = async ({ role, data }: LoginProp): Promise<any> => {
     try {
 
-        const response = await apiClient.post("auth/login", { type: role, data });
-        console.log(response);
+        const response = await apiClient.post("auth/login", { type: role, userData: data });
+
         if (response.status === 201) {
-            setUser({
-                isLoggedIn: true,
-                id: response.data.userInfo.id,
-                name: response.data.userInfo.name,
-                email: response.data.userInfo.email,
-                student: {
-                    department: response.data.userInfo.department,
-                    year: response.data.userInfo.year
-                },
-                mobileNumber: response.data.userInfo.mobileNumber,
-                role: response.data.userInfo.adminRole || 'student',
-            });
-            if (role === "staff") {
-                navigate(`/admin/dashboard`);
-            } else {
-                navigate(`/user/dashboard`);
+            localStorage.setItem('token', response.data.token);
+
+            return {
+                status: true,
+                data: {
+                    isLoggedIn: true,
+                    id: response.data.user.id,
+                    name: response.data.user.name,
+                    email: response.data.user.email,
+                    student: {
+                        department: response.data.user.department || null,
+                        year: response.data.user.year || null
+                    },
+                    mobileNumber: response.data.user.mobileNumber,
+                    role: response.data.user.adminRole || 'student',
+                }
             }
-            return;
         }
         console.log(response.data);
-    } catch (error) {
-        console.error("Error logging in:", error);
+        return {
+            status: false,
+            data: "error"
+        }
+    } catch (error: any) {
+        console.log(error)
+        return {
+            status: false,
+            data: error.response.data.error
+        };
     }
 }
+
+export const fetchAdmins = async () => {
+    try {
+        const response = await apiClient.get("users/admins/");
+        return response.data.data;
+    } catch (err) {
+        console.log("Failed to fetch admins");
+        return null;
+    }
+};

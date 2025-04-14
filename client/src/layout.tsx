@@ -1,17 +1,20 @@
 import { Route, Routes } from 'react-router-dom';
-import PageNotFound from './pages/404';
-import ViewComplaints from './pages/complaints';
-import StaffHomeLayout, { Home as StaffHome } from './pages/admin/home';
-import Login from './pages/login';
-import RaiseComplaint from './pages/user/raiseComplaint';
-import ReserveLab from './pages/user/reservation';
-import UserInfo from './pages/admin/userInfo';
-import ReservedDashboard from './pages/admin/reservedDashboard';
-import { UserProvider } from './context/userProvider';
-import LabItems from './pages/admin/labItems';
-import StudentHomeLayout, { Home as StudentHome } from './pages/user/home';
 import ProtectedRoutes from './components/protectedRoutes';
-import Settings from './pages/user/settings';
+import { UserProvider } from './context/userProvider';
+
+import Login from './pages/login';
+import ViewComplaints from './pages/complaints';
+import PageNotFound from './pages/404';
+
+import StaffHomeLayout, { Home as StaffHome } from './pages/admin/home';
+import ReservedDashboard from './pages/admin/reservedDashboard';
+import UserInfo from './pages/admin/adminList';
+import LabItems from './pages/admin/labItems';
+import Students from './pages/admin/students';
+
+import RaiseComplaint from './pages/student/raiseComplaint';
+import StudentHomeLayout, { Home as StudentHome } from './pages/student/home';
+import Settings from './pages/student/settings';
 
 function Layout() {
     return (
@@ -29,12 +32,13 @@ function Layout() {
                     <Route path="dashboard" element={<StaffHome />} />
                     <Route path="reserveDashBoard" element={<ReservedDashboard />} />
                     <Route path="usersInfo" element={<UserInfo />} />
+                    <Route path="students" element={<Students />} />
                     <Route path="labItems" element={<LabItems />} />
                     <Route path="complaints" element={<ViewComplaints />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Route>
                 <Route
-                    path="/user"
+                    path="/student"
                     element={
                         <ProtectedRoutes>
                             <StudentHomeLayout />
@@ -43,6 +47,7 @@ function Layout() {
                     <Route path="dashboard" element={<StudentHome />} />
                     <Route path="raise-complaint" element={<RaiseComplaint />} />
                     <Route path="complaints" element={<ViewComplaints />} />
+                    <Route path="reserve" element={<ReservedDashboard />} />
                     <Route path="settings" element={<Settings />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Route>
