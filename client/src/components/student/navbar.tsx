@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { MdOutlineDashboard as Home } from "react-icons/md";
 import { AiOutlineProfile as Complaints } from "react-icons/ai";
+import { CgScrollH as FaBars } from "react-icons/cg";
 import { CiWarning as RaiseComplaints } from "react-icons/ci";
-import { CiCalendarDate as Calendar } from "react-icons/ci";
-import { CgScrollH as FaBars} from "react-icons/cg";
+import { GrDocumentUser } from "react-icons/gr";
+import { MdOutlineDashboard as Home } from "react-icons/md";
+import { GoTasklist } from "react-icons/go";
+
+import { Link } from "react-router-dom";
 
 
-import { IoSettingsOutline as Settings, IoLogOutOutline as Logout } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
+import { IoLogOutOutline as Logout, IoSettingsOutline as Settings } from "react-icons/io5";
+import { useUser } from "../../context/userProvider";
 
 export function Navbar() {
+    const { user, logout } = useUser();
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
@@ -24,7 +28,7 @@ export function Navbar() {
             </button>
             <div className={`flex gap-2 items-center h-20 shadow-md px-3 ${isCollapsed && "justify-center"}`}>
                 <FaUserCircle className="text-indigo-700 text-4xl" />
-                {!isCollapsed && <h1 className="text-lg font-bold">Naveen</h1>}
+                {!isCollapsed && <h1 className="text-lg font-bold">{user?.name}</h1>}
             </div>
 
             {/* Sidebar Links */}
@@ -37,6 +41,24 @@ export function Navbar() {
                         >
                             <Home size={22} className="text-gray-500" />
                             {!isCollapsed && <span className="text-sm font-medium ml-3">Dashboard</span>}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="/student/tasks"
+                            className={`flex items-center h-12 px-3 text-gray-500 hover:text-gray-800 w-fit mx-auto ${!isCollapsed && "w-full hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"}`}
+                        >
+                            <GoTasklist size={22} className="text-gray-500" />
+                            {!isCollapsed && <span className="text-sm font-medium ml-3">Today's Task</span>}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="/student/login-history"
+                            className={`flex items-center h-12 px-3 text-gray-500 hover:text-gray-800 transition-transform duration-200 w-fit mx-auto ${!isCollapsed && "w-full hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"}`}
+                        >
+                            <GrDocumentUser size={22} className="text-gray-400" />
+                            {!isCollapsed && <span className="text-sm font-medium ml-3">Session</span>}
                         </Link>
                     </li>
                     <li>
@@ -71,6 +93,7 @@ export function Navbar() {
                     <li>
                         <Link
                             to="/"
+                            onClick={() => logout()}
                             className={`flex items-center h-12 px-3 text-gray-500 hover:text-gray-800 transition-transform duration-200 w-fit mx-auto ${!isCollapsed && "w-full hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"}`}
                         >
                             <Logout size={22} className="text-gray-500" />

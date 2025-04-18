@@ -44,7 +44,7 @@ export const deleteAdmin = async (req: Request, res: Response) => {
       mobileNumber: admin.mobileNumber,
       adminRole: admin.adminRole,
       deletedOn: new Date(),
-      deletedBy: req.userId,
+      deletedBy: req.user?.id,
       reason: "Fired"
     });
 

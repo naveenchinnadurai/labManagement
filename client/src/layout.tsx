@@ -15,6 +15,8 @@ import Students from './pages/admin/students';
 import RaiseComplaint from './pages/student/raiseComplaint';
 import StudentHomeLayout, { Home as StudentHome } from './pages/student/home';
 import Settings from './pages/student/settings';
+import StudentLoginHistory from './pages/student/sessionHistory';
+import StudentTasks from './pages/student/tasks';
 
 function Layout() {
     return (
@@ -47,6 +49,8 @@ function Layout() {
                     <Route path="dashboard" element={<StudentHome />} />
                     <Route path="raise-complaint" element={<RaiseComplaint />} />
                     <Route path="complaints" element={<ViewComplaints />} />
+                    <Route path="tasks" element={<StudentTasks />} />
+                    <Route path='login-history' element={<StudentLoginHistory />} />
                     <Route path="reserve" element={<ReservedDashboard />} />
                     <Route path="settings" element={<Settings />} />
                     <Route path="*" element={<PageNotFound />} />

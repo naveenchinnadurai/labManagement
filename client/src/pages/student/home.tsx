@@ -1,20 +1,19 @@
 import React from 'react';
-import { Navbar } from '../../components/student/navbar';
+import { FaBook, FaEnvelope, FaExclamationTriangle, FaMoneyBillWave, FaPhone, FaUniversity } from "react-icons/fa";
 import { Outlet } from 'react-router-dom';
-import { FaUserCircle, FaEnvelope, FaBook, FaUniversity, FaPhone, FaExclamationTriangle, FaMoneyBillWave } from "react-icons/fa";
+import { Navbar } from '../../components/student/navbar';
 import { useUser } from '../../context/userProvider';
 
 const HomeRoot: React.FC = () => {
     return (
-        <div className="flex w-screen h-screen">
+        <div className="flex w-screen h-screen bg-gray-50">
             <Navbar />
-            <div className="overflow-auto w-full">
+            <div className="overflow-auto w-full p-6">
                 <Outlet />
             </div>
         </div>
     );
 };
-
 
 export const Home = () => {
     const { user, logout } = useUser();
@@ -36,82 +35,55 @@ export const Home = () => {
     };
 
     return (
-        <div className="flex flex-col gap-6 w-full max-w-6xl">
-            <div className='bg-white rounded-lg shadow-lg p-10 '>
-                <div className="gap-5 grid grid-cols-2 w-2/3">
-                    <div className="flex items-center">
-                        <FaUniversity className="mr-3 text-indigo-500" />
-                        <p className="text-gray-700">
-                            <strong>Roll No: </strong> {studentDetails.rollNo}
-                        </p>
-                    </div>
-
-                    <div className="flex items-center">
-                        <FaBook className="mr-3 text-indigo-500" />
-                        <p className="text-gray-700">
-                            <strong>Department: </strong> {studentDetails.department}
-                        </p>
-                    </div>
-
-                    <div className="flex items-center">
-                        <FaBook className="mr-3 text-indigo-500" />
-                        <p className="text-gray-700">
-                            <strong>Year: </strong> {studentDetails.year}
-                        </p>
-                    </div>
-
-                    <div className="flex items-center">
-                        <FaEnvelope className="mr-3 text-indigo-500" />
-                        <p className="text-gray-700">
-                            <strong>Email: </strong> {studentDetails.email}
-                        </p>
-                    </div>
-
-                    <div className="flex items-center">
-                        <FaPhone className="mr-3 text-indigo-500" />
-                        <p className="text-gray-700">
-                            <strong>Mobile: </strong> {studentDetails.mobileNumber}
-                        </p>
-                    </div>
-
-                    <button onClick={logout}>Signout</button>
+        <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-md p-8 space-y-6">
+                <h2 className="text-2xl font-semibold text-gray-800">Student Profile</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <InfoRow icon={<FaUniversity />} label="Roll No" value={studentDetails.rollNo} />
+                    <InfoRow icon={<FaBook />} label="Department" value={studentDetails.department} />
+                    <InfoRow icon={<FaBook />} label="Year" value={studentDetails.year} />
+                    <InfoRow icon={<FaEnvelope />} label="Email" value={studentDetails.email} />
+                    <InfoRow icon={<FaPhone />} label="Mobile" value={studentDetails.mobileNumber} />
+                </div>
+                <div className="flex justify-end">
+                    <button
+                        onClick={logout}
+                        className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition"
+                    >
+                        Sign Out
+                    </button>
                 </div>
             </div>
-            <div className="bg-white rounded-lg shadow-lg p-6">
-                {/* Fines */}
-                <h2 className="text-xl font-bold mb-4 text-gray-900">
-                    <FaMoneyBillWave className="inline mr-2 text-green-600" /> Fines
+
+            <div className="bg-white rounded-2xl shadow-md p-8">
+                <h2 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
+                    <FaMoneyBillWave className="mr-2 text-green-600" /> Fines
                 </h2>
                 {studentDetails.fines.length > 0 ? (
-                    studentDetails.fines.map((fine, index) => (
-                        <div key={index} className="bg-red-100 p-4 mb-4 rounded-md shadow-sm">
-                            <p>
-                                <strong>Amount: </strong> ₹{fine.amount}
-                            </p>
-                            <p>
-                                <strong>Reason: </strong> {fine.reason}
-                            </p>
-                        </div>
-                    ))
+                    <div className="space-y-4">
+                        {studentDetails.fines.map((fine, index) => (
+                            <div key={index} className="bg-red-100 p-4 rounded-md shadow-sm border-l-4 border-red-500">
+                                <p><strong>Amount: </strong> ₹{fine.amount}</p>
+                                <p><strong>Reason: </strong> {fine.reason}</p>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <p className="text-gray-600">No fines available.</p>
                 )}
 
-                {/* Complaints */}
-                <h2 className="text-xl font-bold mt-6 mb-4 text-gray-900">
-                    <FaExclamationTriangle className="inline mr-2 text-yellow-600" /> Complaints
+                <h2 className="text-xl font-bold mt-8 mb-4 text-gray-800 flex items-center">
+                    <FaExclamationTriangle className="mr-2 text-yellow-600" /> Complaints
                 </h2>
                 {studentDetails.complaints.length > 0 ? (
-                    studentDetails.complaints.map((complaint, index) => (
-                        <div key={index} className="bg-yellow-100 p-4 mb-4 rounded-md shadow-sm">
-                            <p>
-                                <strong>Complaint: </strong> {complaint.detail}
-                            </p>
-                            <p>
-                                <strong>Status: </strong> {complaint.status}
-                            </p>
-                        </div>
-                    ))
+                    <div className="space-y-4">
+                        {studentDetails.complaints.map((complaint, index) => (
+                            <div key={index} className="bg-yellow-100 p-4 rounded-md shadow-sm border-l-4 border-yellow-500">
+                                <p><strong>Complaint: </strong> {complaint.detail}</p>
+                                <p><strong>Status: </strong> {complaint.status}</p>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <p className="text-gray-600">No complaints raised.</p>
                 )}
@@ -119,5 +91,22 @@ export const Home = () => {
         </div>
     );
 };
+
+const InfoRow = ({
+    icon,
+    label,
+    value,
+}: {
+    icon: React.ReactNode;
+    label: string;
+    value?: string;
+}) => (
+    <div className="flex items-center space-x-3">
+        <div className="text-indigo-500 text-xl">{icon}</div>
+        <p className="text-gray-700">
+            <strong>{label}: </strong> {value ?? 'N/A'}
+        </p>
+    </div>
+);
 
 export default HomeRoot;

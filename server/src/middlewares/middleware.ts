@@ -3,11 +3,16 @@ import { verifyToken } from "../utils/lib";
 
 declare module 'express-serve-static-core' {
     interface Request {
-        userId?: string;
+        user?: {
+            id: string,
+            email: string,
+            role: string,
+            sessionId: string | null,
+        }
     }
 }
 
-export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const checkUser = (req: Request, res: Response, next: NextFunction) => {
 
     const authHeader = req.headers.authorization;
 
@@ -18,8 +23,6 @@ export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => 
 
         const token = authHeader.split(' ')[1]; // Correctly extract the token
 
-        console.log(token)
-
         const decoded = verifyToken(token);
 
         if (!decoded || typeof decoded === 'string') {
@@ -27,9 +30,13 @@ export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => 
         }
 
         // Optionally attach user info to request
-        req.userId = decoded.id;
 
-        console.log(decoded);
+        req.user = {
+            id: decoded.id,
+            email: decoded.email,
+            role: decoded.role,
+            sessionId: decoded.sessionId
+        }
 
         next();
 

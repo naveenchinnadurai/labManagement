@@ -1,10 +1,10 @@
 import express from 'express';
 import { deleteAdmin, getAdmins } from '../controller/user.controllers';
-import { verifyAdmin } from '../middlewares/middleware';
+import { checkUser } from '../middlewares/middleware';
 
 const router = express.Router();
 
 router.get('/admins', getAdmins );
-router.delete('/admin/:id',verifyAdmin, deleteAdmin );
+router.delete('/admin/:id',checkUser, deleteAdmin );
 
 export default router;

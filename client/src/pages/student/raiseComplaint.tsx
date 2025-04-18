@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Modal from "../../components/modal";
 import { HiPlusSm as Plus } from "react-icons/hi";
+import ComplaintCard from "../../components/complaintCard";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../components/ui/dialog";
 import { useUser } from "../../context/userProvider";
 import apiClient from "../../utils/api";
 import { Complaint } from "../../utils/types";
-import ComplaintCard from "../../components/complaintCard";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../components/ui/dialog";
 
 const RaiseComplaint: React.FC = () => {
-    const { user } = useUser();
+    const { user, setToast } = useUser();
     const [open, setOpen] = useState<boolean>(false);
 
     const [complaintData, setComplaintData] = useState({
         studentId: user?.id,
         studentName: user?.name,
         complaintDetails: "",
-        postedDate: new Date().toISOString().split("T")[0],
         lab: "",
-        status: "Pending"
     });
     const [complaints, setComplaints] = useState<Complaint[] | []>([]);
 
@@ -48,8 +45,24 @@ const RaiseComplaint: React.FC = () => {
         try {
             const res = await apiClient.post('/complaints', complaintData)
             console.log(res)
-        } catch (error) {
+            if (res.status == 201) {
+                const newComplaint: Complaint = {
+                    id: res.data.newComplaint.id,
+                    studentName: res.data.newComplaint.studentName,
+                    complaintDetails: res.data.newComplaint.complaintDetails,
+                    studentId: res.data.newComplaint.studentId,
+                    createdAt: res.data.newComplaint.createdAt,
+                    updatedAt: res.data.newComplaint.updatedAt,
+                    status: res.data.newComplaint.status,
+                    lab: res.data.newComplaint.lab
+                }
+                setComplaints(prev => [...prev, newComplaint])
+                console.log(newComplaint)
+                setToast("Success", res.data.message)
+            }
+        } catch (error: any) {
             console.log(error)
+            setToast("Error", error.response.data.error || "Encounter an Error when Raising a complaint!")
         } finally {
             setOpen(false)
         }
@@ -98,9 +111,6 @@ const RaiseComplaint: React.FC = () => {
                                     <option value="II">Lab II</option>
                                 </select>
                             </div>
-
-
-
                             <button
                                 type="submit"
                                 className="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
@@ -122,7 +132,7 @@ const RaiseComplaint: React.FC = () => {
                             )
                         })
                     ) : (
-                        <p className="text-lg font-normal">You have not raised any complaints!!</p>
+                        <p className="text-md font-normal">You have not raised any complaints!!</p>
                     )
                 }
             </div>

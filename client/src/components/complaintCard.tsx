@@ -9,7 +9,6 @@ import { useUser } from '../context/userProvider';
 import { Complaint } from '../utils/types';
 
 
-
 const ComplaintCard: React.FC<Complaint> = ({ id, studentName, complaintDetails, createdAt, updatedAt, status, lab, studentId }) => {
     const { user } = useUser();
     const [editMode, setEditMode] = useState(false);
@@ -44,9 +43,13 @@ const ComplaintCard: React.FC<Complaint> = ({ id, studentName, complaintDetails,
     };
 
     return (
-        <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+        <div className="p-4 bg-gray-100 rounded-lg shadow-md" key={id}>
             <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-gray-900">Raised By: {user?.name === studentName ? "You" : studentName} ({studentId})</h2>
+                {
+                    user?.id != studentId ? (
+                        <h2 className="text-lg font-bold text-gray-900">Raised By: {user?.name === studentName ? "You" : studentName} ({studentId})</h2>
+                    ) : null
+                }
                 {
                     user?.role != 'student' ? (
                         editMode ? (

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import db from "../db";
 import { complaints } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { getCurrentDateOnly } from "../utils/lib";
 
 export const getComplaints = async (req: Request, res: Response) => {
     try {
@@ -51,29 +52,35 @@ export const getComplaintsByUser = async (req: Request, res: Response) => {
 };
 
 export const createComplaint = async (req: Request, res: Response) => {
-    const { studentId, studentName, complaintDetails, status, lab, postedDate } = req.body;
-    console.log({ studentId, complaintDetails, status, lab, postedDate })
+    const { studentId, studentName, complaintDetails, lab } = req.body;
+    console.log({ studentId, complaintDetails, lab })
+
+    if (!studentId || !studentName || !complaintDetails || !lab) {
+        res.status(400).json({
+            error: "All Fields are Necessary"
+        })
+    }
 
     try {
-        const newComplaint = await db
+        const [newComplaint] = await db
             .insert(complaints)
             .values({
                 studentId,
                 complaintDetails,
                 studentName,
-                createdAt: postedDate,
-                updatedAt: postedDate,
-                status: status,
+                createdAt: getCurrentDateOnly(),
+                updatedAt: getCurrentDateOnly(),
+                status: "Pending",
                 lab: lab,
             })
             .returning();
 
         res.status(201).json({
             message: 'Complaint filed successfully',
-            data: newComplaint,
+            newComplaint: newComplaint,
         });
-    } catch (error) {
-        res.status(500).json({ message: 'Error creating complaint', error });
+    } catch (errors: any) {
+        res.status(500).json({ error: 'Error creating complaint', errors });
     }
 };
 

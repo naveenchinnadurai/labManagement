@@ -7,8 +7,8 @@ interface TokenPayload extends JwtPayload {
     id: string;
     email?: string;
     role?: string;
-  }
-  
+}
+
 
 const SECRET_KEY = process.env.JWT_SALT || "oiwuehsjbdfgsdfihaisqw";
 
@@ -24,3 +24,7 @@ export const verifyToken = (token: string): string | JwtPayload => {
         return "Invalid Token";
     }
 };
+
+export const getCurrentDateOnly = () => {
+    return new Date().toISOString().split("T")[0]
+}

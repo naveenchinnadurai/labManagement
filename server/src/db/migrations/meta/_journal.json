@@ -22,6 +22,20 @@
       "when": 1744558909249,
       "tag": "0002_burly_warhawk",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1744985067318,
+      "tag": "0003_flimsy_skullbuster",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1744987495251,
+      "tag": "0004_narrow_lyja",
+      "breakpoints": true
     }
   ]
 }

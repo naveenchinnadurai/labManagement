@@ -1,4 +1,5 @@
-import apiClient from "./api";
+import { redirect } from "react-router-dom";
+import API from "./api";
 import { LoginUserData } from "./types";
 
 interface LoginProp {
@@ -9,7 +10,7 @@ interface LoginProp {
 export const login = async ({ role, data }: LoginProp): Promise<any> => {
     try {
 
-        const response = await apiClient.post("auth/login", { type: role, userData: data });
+        const response = await API.post("auth/login", { type: role, userData: data });
 
         if (response.status === 201) {
             localStorage.setItem('token', response.data.token);
@@ -25,12 +26,12 @@ export const login = async ({ role, data }: LoginProp): Promise<any> => {
                         department: response.data.user.department || null,
                         year: response.data.user.year || null
                     },
+                    sessionId: response.data.sessionId,
                     mobileNumber: response.data.user.mobileNumber,
                     role: response.data.user.adminRole || 'student',
                 }
             }
         }
-        console.log(response.data);
         return {
             status: false,
             data: "error"
@@ -46,10 +47,20 @@ export const login = async ({ role, data }: LoginProp): Promise<any> => {
 
 export const fetchAdmins = async () => {
     try {
-        const response = await apiClient.get("users/admins/");
+        const response = await API.get("users/admins/");
         return response.data.data;
     } catch (err) {
         console.log("Failed to fetch admins");
         return null;
+    }
+};
+
+export const fetchSessions = async () => {
+    try {
+        const response = await API.get(`/auth/sessions/`);
+        return { status: true, data: response.data.sessions };
+    } catch (error: any) {
+        return { status: false, data: error.response.data.sessions };
+
     }
 };

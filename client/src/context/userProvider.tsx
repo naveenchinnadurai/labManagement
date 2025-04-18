@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import { Student } from "../utils/types";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner"
-
+import API from '../utils/api';
 interface User {
     isLoggedIn: boolean;
     id: string;
@@ -11,6 +11,7 @@ interface User {
     mobileNumber: string;
     student: Student;
     role: 'Hod' | 'Lab Assistant' | 'Faculty' | 'Admin' | 'student';
+    sessionId: string;
 }
 
 interface UserContextType {
@@ -42,10 +43,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     }, [user]);
 
-    const logout = () => {
-        localStorage.clear();
-        setUser(null)
-        navigate('/')
+    const logout = async () => {
+        try {
+            await API.put('/auth/logout')
+        } catch (error: any) {
+            console.log(error)
+        } finally {
+            localStorage.clear();
+            setUser(null)
+            navigate('/')
+        }
     };
 
     const setToast = (head: String, message: String) => {

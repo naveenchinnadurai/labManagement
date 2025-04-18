@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { admins, students } from "../db/schema";
+import { admins, students, students_session } from "../db/schema";
 import db from "../db";
 import { eq } from "drizzle-orm";
-import { generateToken } from "../utils/lib";
+import { generateToken, verifyToken } from "../utils/lib";
+import { handleLogin } from "../utils/helpers";
 
 // Admin registration
 export const register = async (req: Request, res: Response) => {
@@ -59,44 +60,121 @@ export const login = async (req: Request, res: Response) => {
     }
 };
 
+export const logout = async (req: Request, res: Response) => {
+    const user = req.user;
 
-// Helper function to handle login logic for both admins and student
-const handleLogin = async (userType: 'admins' | 'student', identifier: string, password: string, res: Response) => {
-    const table = userType === 'admins' ? admins : students;
-    const field = userType === 'admins' ? admins.email : students.id;
+    if (!user) {
+        return res.status(400).json({ error: "Invalid Token" });
+    }
 
     try {
-        const result = await db.select().from(table).where(eq(field, identifier));
+        const { sessionId } = user;
+
+        if (!sessionId) {
+            return res.status(400).json({ error: "Session ID is required" });
+        }
+
+        const result = await db
+            .update(students_session)
+            .set({
+                isActive: false,
+                logoutDateTime: new Date()
+            })
+            .where(eq(students_session.id, sessionId));
 
         if (result.length === 0) {
-            return res.status(404).json({
-                error: `${userType === 'admins' ? 'Admin' : 'Student'} Not Found! Try again with correct login credentials`,
-            });
+            return res.status(404).json({ error: "Session not found" });
         }
 
-        const user = result[0];
-
-        if (user.password === password) {
-            const token = generateToken(
-                {
-                    id: user.id,
-                    email: user.email,
-                    role: userType,
-                }
-            );
-
-            return res.status(201).json({
-                message: "Login Successful",
-                user,
-                token,
-            });
-        }
-
-        return res.status(401).json({
-            error: "Incorrect Password, try again with correct password",
-        });
+        return res.status(200).json({ message: "Logout successfully" });
     } catch (error) {
-        console.error(`Error logging in ${userType}:`, error);
-        return res.status(500).json({ error: "Internal server error" });
+        console.error("Error updating session:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+export const logoutSession = async (req: Request, res: Response) => {
+    const { sessionId } = req.body;
+
+    if (!sessionId) {
+        return res.status(400).json({ error: "Invalid session Id" });
+    }
+
+    try {
+        const result = await db
+            .update(students_session)
+            .set({
+                isActive: false,
+                logoutDateTime: new Date()
+            })
+            .where(eq(students_session.id, sessionId)).returning();
+
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Session not found" });
+        }
+
+        return res.status(200).json({ message: "Session Logged out successfully" });
+    } catch (error) {
+        console.error("Error updating session:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+export const logoutAllSessions = async (req: Request, res: Response) => {
+    const user = req.user;
+
+    if (!user) {
+        return res.status(400).json({ error: "Invalid Token" });
+    }
+
+    try {
+        const { id } = user;
+
+        if (!id) {
+            return res.status(400).json({ error: "Session ID is required" });
+        }
+
+        const result = await db
+            .update(students_session)
+            .set({
+                isActive: false,
+                logoutDateTime: new Date()
+            })
+            .where(eq(students_session.studentId, id));
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Sessions not found" });
+        }
+
+        return res.status(200).json({ message: "Session Closed successfully" });
+    } catch (error) {
+        console.error("Error updating session:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+export const getSessions = async (req: Request, res: Response) => {
+    try {
+        const studentId = req.user?.id;
+
+        if (!studentId) {
+            return res.status(400).json({ error: "studentId is required in the URL" });
+        }
+
+        const sessions = await db
+            .select()
+            .from(students_session)
+            .where(eq(students_session.studentId, studentId));
+
+        if (sessions.length === 0) {
+            return res.status(404).json({ error: "No sessions found for the given student ID" });
+        }
+
+        return res.status(200).json({ sessions });
+    } catch (error) {
+        console.error("Error fetching sessions:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+

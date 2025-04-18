@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, timestamp, uuid, boolean } from "drizzle-orm/pg-core";
 
 export const admins = pgTable("admins", {
     id: uuid("id").primaryKey().defaultRandom(),
@@ -53,4 +53,14 @@ export const complaints = pgTable("complaints", {
     updatedAt: text("updated_at").notNull(),
     lab: text("lab").default('Common').notNull(),
     message: text('message').default("It will be sorted out soon!!")
+});
+
+export const students_session = pgTable("students_session", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    studentId: text("student_id").notNull().references(() => students.id),
+    lab: text('lab').notNull(),
+    ipAddress: text('ip_address').notNull(),
+    loginDateTime: timestamp("login_date_time", { withTimezone: true }).notNull(),
+    logoutDateTime: timestamp("logout_date_time", { withTimezone: true }),
+    isActive: boolean('is_active').default(true)
 });

@@ -54,12 +54,13 @@ export default function Login() {
       const res = await login({ role, data: userData });
 
       if (res.status) {
+        console.log(res.data)
         setUser(res.data);
 
         if (res.data.role != "student") {
           navigate(`/admin/dashboard`);
         } else {
-          navigate(`/user/dashboard`);
+          navigate(`/student/dashboard`);
         }
       } else {
         setToast("Error", res.data)
