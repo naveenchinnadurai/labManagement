@@ -19,4 +19,5 @@ export interface Complaint {
     updatedAt: string;
     status: 'Resolved' | 'Pending' | 'In Progress';
     lab: string;
+    message: string | null
 }

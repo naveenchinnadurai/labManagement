@@ -10,9 +10,9 @@ type ClassSection = {
 };
 
 const classes: ClassSection[] = [
-  { id: 'c1', name: 'Class A', studentCount: 20 },
-  { id: 'c2', name: 'Class B', studentCount: 15 },
-  { id: 'c3', name: 'Class C', studentCount: 23 },
+  { id: 'c1', name: 'II', studentCount: 20 },
+  { id: 'c2', name: 'III', studentCount: 15 },
+  { id: 'c3', name: 'IV', studentCount: 23 },
 ];
 
 const StudentDashboard = () => {

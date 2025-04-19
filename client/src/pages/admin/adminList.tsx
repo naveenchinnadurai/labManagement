@@ -40,7 +40,7 @@ export interface Admin {
 const Admins: React.FC = () => {
     const [admins, setAdmins] = useState<Admin[]>([]);
     const [open, setOpen] = useState(false);
-    const { setToast } = useUser();
+    const { setToast, user } = useUser();
 
     useEffect(() => {
         getAdmins();
@@ -52,7 +52,7 @@ const Admins: React.FC = () => {
 
     const deleteAdmin = async (id: string) => {
         try {
-            const res = await apiClient.delete(`users/admin/${id}`);
+            const res = await apiClient.delete(`/admin/${id}`);
             if (res.status == 200) {
                 setToast('Success', res.data.message);
                 setAdmins((prev) => prev.filter((admin) => admin.id !== id));
@@ -125,68 +125,71 @@ const Admins: React.FC = () => {
                 {admins.length === 0 ? (
                     <p className="text-lg font-medium">No Admin except you!</p>
                 ) : (
-                    admins.map((admin) => (
-                        <Card key={admin.id} className="relative group transition-all hover:shadow-xl border border-gray-200 rounded-2xl p-4 bg-white flex flex-col justify-between">
-                            <div className="flex items-center gap-4 mb-3">
-                                {/* Avatar */}
-                                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
-                                    {admin.name
-                                        .split(' ')
-                                        .map((n) => n[0])
-                                        .slice(0, 2)
-                                        .join('')
-                                        .toUpperCase()}
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-semibold text-gray-800">{admin.name}</h3>
-                                    <p className="text-sm text-gray-500">{admin.adminRole}</p>
-                                </div>
-                            </div>
+                    admins.map((admin) => {
+                        if (admin.id != user?.id) {
+                            return (
+                                <Card key={admin.id} className="relative group transition-all hover:shadow-xl border border-gray-200 rounded-2xl p-4 bg-white flex flex-col justify-between">
+                                    <div className="flex items-center gap-4 mb-3">
+                                        {/* Avatar */}
+                                        <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+                                            {admin.name
+                                                .split(' ')
+                                                .map((n) => n[0])
+                                                .slice(0, 2)
+                                                .join('')
+                                                .toUpperCase()}
+                                        </div>
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-gray-800">{admin.name}</h3>
+                                            <p className="text-sm text-gray-500">{admin.adminRole}</p>
+                                        </div>
+                                    </div>
 
-                            <div className="text-sm text-gray-600 space-y-1 mb-4">
-                                {admin.mobileNumber && (
-                                    <p>
-                                        <strong>Mobile:</strong> {admin.mobileNumber}
-                                    </p>
-                                )}
-                                <p>
-                                    <strong>Email:</strong>{' '}
-                                    <span
-                                        className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${admin.adminRole === 'super'
-                                            ? 'bg-red-100 text-red-700'
-                                            : 'bg-green-100 text-green-700'
-                                            }`}
-                                    >
-                                        {admin.email}
-                                    </span>
-                                </p>
-                            </div>
+                                    <div className="text-sm text-gray-600 space-y-1 mb-4">
+                                        {admin.mobileNumber && (
+                                            <p>
+                                                <strong>Mobile:</strong> {admin.mobileNumber}
+                                            </p>
+                                        )}
+                                        <p>
+                                            <strong>Email:</strong>{' '}
+                                            <span
+                                                className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${admin.adminRole === 'super'
+                                                    ? 'bg-red-100 text-red-700'
+                                                    : 'bg-green-100 text-green-700'
+                                                    }`}
+                                            >
+                                                {admin.email}
+                                            </span>
+                                        </p>
+                                    </div>
 
-                            {/* Delete Button */}
-                            <div className="absolute top-2 right-2">
-                                <AlertDialog>
-                                    <AlertDialogTrigger className="bg-pink-100 hover:bg-pink-200 p-2 rounded-full">
-                                        <Delete className="h-4 w-4 text-red-600" />
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle className="text-xl">Are you sure?</AlertDialogTitle>
-                                            <AlertDialogDescription className="text-base">
-                                                You're about to delete <strong>{admin.name}</strong> who is a <strong>{admin.adminRole}</strong>.
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                            <AlertDialogAction onClick={() => deleteAdmin(admin.id)}>
-                                                Ok
-                                            </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                            </div>
-                        </Card>
-
-                    ))
+                                    {/* Delete Button */}
+                                    <div className="absolute top-2 right-2">
+                                        <AlertDialog>
+                                            <AlertDialogTrigger className="bg-pink-100 hover:bg-pink-200 p-2 rounded-full">
+                                                <Delete className="h-4 w-4 text-red-600" />
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle className="text-xl">Are you sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription className="text-base">
+                                                        You're about to delete <strong>{admin.name}</strong> who is a <strong>{admin.adminRole}</strong>.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => deleteAdmin(admin.id)}>
+                                                        Ok
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </div>
+                                </Card>
+                            )
+                        }
+                    })
                 )}
             </div>
         </div>

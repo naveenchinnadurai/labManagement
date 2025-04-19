@@ -52,7 +52,7 @@ export const complaints = pgTable("complaints", {
     createdAt: text("created_at").notNull(),
     updatedAt: text("updated_at").notNull(),
     lab: text("lab").default('Common').notNull(),
-    message: text('message').default("It will be sorted out soon!!")
+    message: text('message').default('')
 });
 
 export const students_session = pgTable("students_session", {

@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { AiOutlineProfile as Complaints } from "react-icons/ai";
 import { CgScrollH as FaBars } from "react-icons/cg";
 import { CiWarning as RaiseComplaints } from "react-icons/ci";
+import { GoTasklist } from "react-icons/go";
 import { GrDocumentUser } from "react-icons/gr";
 import { MdOutlineDashboard as Home } from "react-icons/md";
-import { GoTasklist } from "react-icons/go";
 
 import { Link } from "react-router-dom";
 
@@ -28,7 +27,7 @@ export function Navbar() {
             </button>
             <div className={`flex gap-2 items-center h-20 shadow-md px-3 ${isCollapsed && "justify-center"}`}>
                 <FaUserCircle className="text-indigo-700 text-4xl" />
-                {!isCollapsed && <h1 className="text-lg font-bold">{user?.name}</h1>}
+                {!isCollapsed && <h1 className="text-lg font-bold">{user?.name.split(' ')[0]}</h1>}
             </div>
 
             {/* Sidebar Links */}
@@ -63,22 +62,22 @@ export function Navbar() {
                     </li>
                     <li>
                         <Link
-                            to="/student/raise-complaint"
+                            to="/student/complaints"
                             className={`flex items-center h-12 px-3 text-gray-500 hover:text-gray-800 transition-transform duration-200 w-fit mx-auto ${!isCollapsed && "w-full hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"}`}
                         >
                             <RaiseComplaints size={22} className="text-gray-500" />
                             {!isCollapsed && <span className="text-sm font-medium ml-3">Raise Issue</span>}
                         </Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link
                             to="/student/complaints"
                             className={`flex items-center h-12 px-3 text-gray-500 hover:text-gray-800 transition-transform duration-200 w-fit mx-auto ${!isCollapsed && "w-full hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"}`}
                         >
                             <Complaints size={22} className="text-gray-500" />
-                            {!isCollapsed && <span className="text-sm font-medium ml-3">Complaints</span>}
+                            {!isCollapsed && <span className="text-sm font-medium ml-3">Profile</span>}
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
                 <ul>
                     <li>

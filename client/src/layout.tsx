@@ -3,8 +3,8 @@ import ProtectedRoutes from './components/protectedRoutes';
 import { UserProvider } from './context/userProvider';
 
 import Login from './pages/login';
-import ViewComplaints from './pages/complaints';
 import PageNotFound from './pages/404';
+import Complaint from './pages/complaint';
 
 import StaffHomeLayout, { Home as StaffHome } from './pages/admin/home';
 import ReservedDashboard from './pages/admin/reservedDashboard';
@@ -12,7 +12,6 @@ import UserInfo from './pages/admin/adminList';
 import LabItems from './pages/admin/labItems';
 import Students from './pages/admin/students';
 
-import RaiseComplaint from './pages/student/raiseComplaint';
 import StudentHomeLayout, { Home as StudentHome } from './pages/student/home';
 import Settings from './pages/student/settings';
 import StudentLoginHistory from './pages/student/sessionHistory';
@@ -34,9 +33,9 @@ function Layout() {
                     <Route path="dashboard" element={<StaffHome />} />
                     <Route path="reserveDashBoard" element={<ReservedDashboard />} />
                     <Route path="usersInfo" element={<UserInfo />} />
+                    <Route path="complaints" element={<Complaint />} />
                     <Route path="students" element={<Students />} />
                     <Route path="labItems" element={<LabItems />} />
-                    <Route path="complaints" element={<ViewComplaints />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Route>
                 <Route
@@ -47,9 +46,8 @@ function Layout() {
                         </ProtectedRoutes>}
                 >
                     <Route path="dashboard" element={<StudentHome />} />
-                    <Route path="raise-complaint" element={<RaiseComplaint />} />
-                    <Route path="complaints" element={<ViewComplaints />} />
                     <Route path="tasks" element={<StudentTasks />} />
+                    <Route path="complaints" element={<Complaint />} />
                     <Route path='login-history' element={<StudentLoginHistory />} />
                     <Route path="reserve" element={<ReservedDashboard />} />
                     <Route path="settings" element={<Settings />} />

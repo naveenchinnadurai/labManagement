@@ -45,14 +45,6 @@ export const Home = () => {
                     <InfoRow icon={<FaEnvelope />} label="Email" value={studentDetails.email} />
                     <InfoRow icon={<FaPhone />} label="Mobile" value={studentDetails.mobileNumber} />
                 </div>
-                <div className="flex justify-end">
-                    <button
-                        onClick={logout}
-                        className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition"
-                    >
-                        Sign Out
-                    </button>
-                </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-md p-8">

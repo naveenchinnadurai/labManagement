@@ -8,19 +8,20 @@ export const getComplaints = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
-        if (id) {
-            const complaint = await db.select().from(complaints).where(eq(complaints.id, id));
-            if (complaint) {
-                res.status(200).json({ message: "Complaints fetched successful", data: complaint[0] });
-            } else {
-                res.status(404).json({ message: 'Complaint not found' });
-            }
-        } else {
+        if (!id) {
             const allComplaints = await db.select().from(complaints);
-            res.status(200).json({ message: "Complaints fetched successful", data: allComplaints });
+            return res.status(200).json({ message: "Complaints fetched successful", complaints: allComplaints });
         }
-    } catch (error) {
-        res.status(500).json({ message: 'Server Error', error });
+
+        const complaint = await db.select().from(complaints).where(eq(complaints.id, id));
+
+        if (!complaint) {
+            return res.status(404).json({ error: 'Complaint not found' });
+        }
+
+        return  res.status(200).json({ message: "Complaints fetched successful", complaints: complaint[0] });
+    } catch (errors) {
+        return res.status(500).json({ error: 'Server Error', errors });
     }
 };
 
@@ -87,29 +88,29 @@ export const createComplaint = async (req: Request, res: Response) => {
 
 export const updateComplaintStatus = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { status } = req.body;
-    console.log({ id, status })
+    const { status, message } = req.body;
+    console.log({ id, status, message })
 
     if (!id || !status) {
-        return res.status(400).json({ message: 'Complaint ID and status are required.' });
+        return res.status(400).json({ error: 'Complaint ID and status are required.' });
     }
 
     try {
         const updatedComplaint = await db
             .update(complaints)
-            .set({ status, updatedAt: new Date().toISOString() })
+            .set({ status, updatedAt: new Date().toISOString(), message })
             .where(eq(complaints.id, id))
             .returning();
 
         if (!updatedComplaint.length) {
-            return res.status(404).json({ message: 'Complaint not found.' });
+            return res.status(404).json({ error: 'Complaint not found.' });
         }
 
         res.status(200).json({
             message: 'Complaint status updated successfully',
             data: updatedComplaint[0],
         });
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating complaint status', error });
+    } catch (errors: any) {
+        res.status(500).json({ error: 'Error updating complaint status', errors });
     }
 };

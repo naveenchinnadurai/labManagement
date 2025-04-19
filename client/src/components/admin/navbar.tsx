@@ -4,14 +4,14 @@ import { GrAppsRounded as HomeIcon } from "react-icons/gr";
 import { PiStudentBold as Students } from "react-icons/pi";
 import { FaCalendarDays as Book, FaCopy as Complaints, FaUserTie as Staff } from "react-icons/fa6";
 import { TbListDetails as Details } from "react-icons/tb";
-import { IoMdSettings as Settings } from "react-icons/io";
+import { IoLogOutOutline as Logout, IoSettingsOutline as Settings } from "react-icons/io5";
 import { CgScrollH as FaBars } from "react-icons/cg";
 import { FaUserCircle } from "react-icons/fa";
 
 import { useUser } from "../../context/userProvider";
 
 const AdminNavbar = () => {
-    const { user } = useUser();
+    const { user, logout } = useUser();
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
@@ -75,6 +75,16 @@ const AdminNavbar = () => {
                         <Link to="/admin/settings" className={`flex items-center h-12 px-3 text-gray-500 hover:text-gray-800 w-fit mx-auto ${!isCollapsed && "w-full hover:translate-x-2 transition-transform ease-in duration-200"}`}>
                             <Settings size={22} className="text-gray-500" />
                             {!isCollapsed && <span className="text-sm font-medium ml-3">Settings</span>}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="/"
+                            onClick={() => logout()}
+                            className={`flex items-center h-12 px-3 text-gray-500 hover:text-gray-800 transition-transform duration-200 w-fit mx-auto ${!isCollapsed && "w-full hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800"}`}
+                        >
+                            <Logout size={22} className="text-gray-500" />
+                            {!isCollapsed && <span className="text-sm font-medium ml-3">Logout</span>}
                         </Link>
                     </li>
                 </ul>

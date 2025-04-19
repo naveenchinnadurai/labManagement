@@ -1,4 +1,3 @@
-import { redirect } from "react-router-dom";
 import API from "./api";
 import { LoginUserData } from "./types";
 
@@ -47,7 +46,7 @@ export const login = async ({ role, data }: LoginProp): Promise<any> => {
 
 export const fetchAdmins = async () => {
     try {
-        const response = await API.get("users/admins/");
+        const response = await API.get("/admin/");
         return response.data.data;
     } catch (err) {
         console.log("Failed to fetch admins");
