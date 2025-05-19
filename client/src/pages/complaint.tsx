@@ -118,7 +118,7 @@ const RaiseComplaint: React.FC = () => {
                         </div>
                         <Card>
                             <CardContent className="py-5">
-                                <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-4 mb-5">
+                                <div className="grid sm:grid-cols-2 2l:grid-cols-3 gap-4 mb-5">
                                     {yourComplaintCount > 0 ? (
                                         complaints.map((e) => {
                                             if (e.studentId == user.id) {
@@ -139,7 +139,7 @@ const RaiseComplaint: React.FC = () => {
             <h1 className="text-2xl font-bold mb-4 bg-white rounded-xl shadow-md p-5">Students Complaints</h1>
             <Card>
                 <CardContent className="py-5">
-                    <div className="grid sm:grid-cols-2 2xl:grid-cols-3 gap-3">
+                    <div className="grid sm:grid-cols-2 23 gap-3">
                         {
                             ((complaints?.length) - yourComplaintCount) > 0 ? (
                                 complaints.map((complaint) => {

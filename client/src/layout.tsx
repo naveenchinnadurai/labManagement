@@ -12,7 +12,7 @@ import UserInfo from './pages/admin/adminList';
 import LabItems from './pages/admin/labItems';
 import Students from './pages/admin/students';
 
-import StudentHomeLayout, { Home as StudentHome } from './pages/student/home';
+import StudentHomeLayout, { StudentDashboard as StudentHome } from './pages/student/home';
 import Settings from './pages/student/settings';
 import StudentLoginHistory from './pages/student/sessionHistory';
 import StudentTasks from './pages/student/tasks';
